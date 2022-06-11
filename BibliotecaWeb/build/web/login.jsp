@@ -37,7 +37,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                                <a href="Controlador?operacion=principal" class="btn btn-info btn-md" value="submit"></a>
+                                <a href="Controlador?operacion=principal" class="btn btn-info btn-md" value="submit">Ingresar</a>
                             </div>
                             <div id="register-link" class="text-right">
                                 <a href="#" class="text-info">Register here</a>
