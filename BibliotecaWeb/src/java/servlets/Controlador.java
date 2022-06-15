@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import Entidad.Usuario;
+import Modelos.UsuariosCRUD;
 import Utilidades.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,7 +44,7 @@ public class Controlador extends HttpServlet {
         	String op=request.getParameter("operacion");
                 int result=0;
             if(op.equals("principal")){
-                response.sendRedirect("principal.jsp");
+                verificar(request,response);
             }else if(op.equals("grabar")){
 //                MensajeBean men=(MensajeBean) request.getAttribute("mensaje");
                 Conexion oper= new Conexion();
@@ -103,5 +105,19 @@ public class Controlador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void verificar(HttpServletRequest request, HttpServletResponse response) {
+        UsuariosCRUD crud;
+        Usuario usuario;
+        usuario=this.obtenerDatos(request);
+        //response.sendRedirect("principal.jsp");
+    }
+
+    private Usuario obtenerDatos(HttpServletRequest request) {
+        Usuario u = new Usuario();
+        u.setNombre(request.getParameter("username"));
+        u.setClave(request.getParameter("password"));
+        return u;
+    }
 
 }
