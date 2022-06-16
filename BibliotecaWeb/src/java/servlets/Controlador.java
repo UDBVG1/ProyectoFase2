@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 //import javabeans.MensajeBean;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 //import modelo.*;
 
 /**
@@ -26,16 +27,7 @@ import javax.servlet.RequestDispatcher;
  */
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
 public class Controlador extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -106,16 +98,29 @@ public class Controlador extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void verificar(HttpServletRequest request, HttpServletResponse response) {
+    private void verificar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session;
         UsuariosCRUD crud;
         Usuario usuario;
         usuario=this.obtenerDatos(request);
+        crud = new UsuariosCRUD();
+        usuario = crud.usuarioAcceso(usuario.Usuario,usuario.Clave);
+        System.out.println(usuario.toString());
+        if (usuario !=null && usuario.Nivel==3){
+            session=request.getSession();
+            session.setAttribute("usuario", usuario);
+            request.setAttribute("msje", "Ingreso Aceptado");
+            this.getServletConfig().getServletContext().getRequestDispatcher("/principal.jsp").forward(request, response);
+        }else{
+            request.setAttribute("msje", "Credenciales Incorrectas");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         //response.sendRedirect("principal.jsp");
     }
 
     private Usuario obtenerDatos(HttpServletRequest request) {
         Usuario u = new Usuario();
-        u.setNombre(request.getParameter("username"));
+        u.setUsuario(request.getParameter("username"));
         u.setClave(request.getParameter("password"));
         return u;
     }
