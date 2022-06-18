@@ -24,19 +24,14 @@ import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
-//import modelo.*;
-
-
-@WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
-public class ControladorEV extends HttpServlet {
-    
+//import modelo.*;    
 
 /**
  *
  * @author Eveling Santos
  */
-@WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
-public class Controlador extends HttpServlet {
+@WebServlet(name = "ControladorEV", urlPatterns = {"/ControladorEV"})
+public class ControladorEV extends HttpServlet {
 
     
     public MaterialCRUDD NuevoMaterialCRUDD=new MaterialCRUDD();
@@ -111,8 +106,8 @@ public class Controlador extends HttpServlet {
                             }
                             else{
                                     
-                                    Escrito NuevoEscrito=new Escrito();
-                                    Audiovisual NuevoAudio=new Audiovisual();
+                                    Escrito NuevoEscrito=new Escrito(tipo, titulo, tipo, valor, i, valor, valor);
+                                    Audiovisual NuevoAudio=new Audiovisual(tipo, titulo, titulo, ubicacion, valor, tipo, valor);
                                     MaterialCRUDD Nmaterial=new MaterialCRUDD();
                                     tipo=Nmaterial.PreparacionTipo(request.getParameter("tipo"));
                                     out.println(tipo);
@@ -286,4 +281,4 @@ public class Controlador extends HttpServlet {
     
 
 }
-}
+

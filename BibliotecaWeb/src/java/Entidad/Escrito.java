@@ -10,10 +10,10 @@ package Entidad;
  * @author admin
  */
 public class Escrito extends Material{
-    public int numPaginas,fechaPubli;
-    public String editorial,periodicidad,ISBN;
+    public int numPaginas,fechaPubli,ISBN;
+    public String editorial,periodicidad;
 
-    public Escrito(String codigo, String titulo, String autor,int numPaginas, String ISBN,int fechaPubli,int cantDis) {
+    public Escrito(String codigo, String titulo, String autor,int numPaginas, int ISBN,int fechaPubli,int cantDis) {
         super(codigo, titulo, autor,cantDis);
         this.numPaginas = numPaginas;
         this.ISBN = ISBN;
@@ -29,11 +29,11 @@ public class Escrito extends Material{
         this.numPaginas = numPaginas;
     }
 
-    public String getISBN() {
+    public int getISBN() {
         return ISBN;
     }
 
-    public void setISBN(String ISBN) {
+    public void setISBN(int ISBN) {
         this.ISBN = ISBN;
     }
 
