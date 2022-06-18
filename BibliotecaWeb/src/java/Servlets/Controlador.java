@@ -91,11 +91,12 @@ public class Controlador extends HttpServlet {
          
          tipo=titulo=ubicacion="";
          valor=Integer.parseInt(request.getParameter("operacion"));
+         out.println(valor);
          i=Integer.parseInt(request.getParameter("r1"));
-         tipo=request.getParameter("tipo");
-         out.println(tipo);
+         
+        
          switch (valor){
-             case 1:            
+             case 1:            tipo=request.getParameter("tipo");
                                 if (i==1){
                                 Material NuevoMaterial=new Material();
                                 
@@ -235,6 +236,20 @@ public class Controlador extends HttpServlet {
                                 }
                             break;
              case 2:
+                   MaterialCRUDD Nmaterial=new MaterialCRUDD();
+                   String codigo=request.getParameter("codigo");
+                   String dato=codigo.substring(0,3);
+                   out.println(codigo);
+                   out.println(dato);
+                   List<List<String>> lista=Nmaterial.BuscarMaterial(codigo, dato);
+                   
+                   if(lista.size()<=0){
+                       out.println("No se encontro dato");
+                   }
+                   else{
+                        request.setAttribute("Material", lista);
+                        request.getRequestDispatcher("Form_MostrarMateriales.jsp").forward(request, response);                    
+                   }
                  
                  break;
              default:

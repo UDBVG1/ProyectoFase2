@@ -222,6 +222,7 @@ public class MaterialCRUDD extends CRUDD{
         case 3: SQLMaterial=SQLMaterial + ",cantidad_disponible from materiales_vista where codigo=?;";
                 break;
     } 
+        SQLMaterial=SQLMaterial + ",cantidad_total, cantidad_disponible, tiempo from materiales_vista where codigo=?;";
         //System.out.println(SQLMaterial);
       List<List<String>> dtm=super.material_lista(SQLMaterial,1,code);
       return dtm;
