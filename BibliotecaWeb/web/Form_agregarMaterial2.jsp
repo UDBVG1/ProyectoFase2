@@ -29,7 +29,7 @@
 
     </div></div>
     <div class="input-group">
-        <div><form method="post" action="Controlador" id="formulario">
+        <div><form class="row g-3" method="post" action="Prueba">
 
             <% if ("Libro".equals(ParametrosGlobales.tipo)){     
             %>

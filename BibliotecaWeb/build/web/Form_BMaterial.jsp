@@ -15,8 +15,7 @@
     </head>
     <body>
      <div class="container">
-         <h1 align="center"> Ingresar Nuevo Material </h1>
-      
+         <h1 align="center"> Buscar Material </h1>
     </div>
     <div class="container"><div class="col-12"> 
         
@@ -24,20 +23,16 @@
     <div class="container">
         <div class="col-md-6">
         <form class="row g-3" method="post" action="Prueba">
-            <div><select class="form-select" aria-label="Tipo de Material" name="tipo" required>
-            <option selected disabled value="">Escoger Tipo de Material</option>
-            <option value="Libro">Libro</option>
-            <option value="Revista">Revista</option>
-            <option value="Obra">Obra</option>
-                </select>
-            </div>
+
+        <div class="col-12"><label for="codigo" class="form-label">Codigo</label>
+        <input type="text" class="form-control" name="codigo" placeholder="Ingresar Codigo" ></div>
         <div class="col-12"><label for="titulo" class="form-label">Titulo</label>
-        <input type="text" class="form-control"  name="titulo" placeholder="Titulo del material" required></div>
-        <div class="col-md-6"> <label for="ubicacion" class="form-label">Ubicación</label>
-        <input type="text" class="form-control" name="ubicacion" placeholder="Ubicación dentro de la Biblioteca" required></div> 
-        <input type="hidden" name="operacion" value="1">
+        <input type="text" class="form-control"  name="titulo" placeholder="Ingrese Titulo" ></div>
+        <div class="col-12"><label for="autor" class="form-label">Autor</label>
+        <input type="text" class="form-control"  name="autor" placeholder="Ingresar Autor" ></div>
+        <input type="hidden" name="operacion" value="3">
         <input type="hidden" name="r1" value="1">
-        <div class="col-12"><button type="submit" class="btn btn-primary" value="Siguiente">Siguiente</button></div></form></div></div>
+        <div class="col-12"><button type="submit" class="btn btn-primary" value="Buscar">Buscar</button></div></form></div></div>
         <div class="container"><div class="col-12"></div>
     </body>
 </html>

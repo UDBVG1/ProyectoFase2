@@ -23,14 +23,12 @@
     </div></div>
     <div class="container">
         <div class="col-md-6">
-        <form class="row g-3" method="post" action="Controlador">
+        <form class="row g-3" method="post" action="Prueba">
             <div><select class="form-select" aria-label="Tipo de Material" name="tipo" required>
             <option selected disabled value="">Escoger Tipo de Material</option>
             <option value="Libro">Libro</option>
             <option value="Revista">Revista</option>
             <option value="Obra">Obra</option>
-            <option value="CD">CD</option>
-            <option value="DVD">DVD</option>
                 </select>
             </div>
         <div class="col-12"><label for="titulo" class="form-label">Titulo</label>

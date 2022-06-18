@@ -10,8 +10,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<title>Agregar Material</title>
+        <script src="js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <title>Mostrar Material</title>
     </head>
     <body>
                 <%@page import="java.util.*"%>
@@ -19,24 +19,29 @@
          <h1 align="center"> Material Encontrado </h1>
       
     </div>
+     
+             <p>
+            <a href="Form_BuscarMaterial.jsp">Regresar</a>
+        </p>
     <div class="container"><div class="col-12"> 
         
     </div></div>
+    <center>
     <div class="container">
         <div class="col-md-6">
             <% List<List<String>> lista=(ArrayList)request.getAttribute("Material");           
             %>
         <div class="container">
-           <ul class="list-group">
+           <ul class="list-group list-group-flush">
             <% for(int i=0;i<lista.size();i++){
             %>
-              <li class="list-group-item">Codigo: <%=lista.get(i).get(0)%></li>
+            </center><li class="list-group-item">Codigo: <%=lista.get(i).get(0)%></li>
                 <li class="list-group-item">Titulo: <%=lista.get(i).get(1)%></li>
                 <li class="list-group-item">Catalogacion: <%=lista.get(i).get(2)%></li>
                 <li class="list-group-item">Cantidad Total: <%=lista.get(i).get(3)%></li>
                 <li class="list-group-item">Cantidad Disponible: <%=lista.get(i).get(4)%></li>
             <%
-        }%></ul>
+        }%></ul></center>
 </div>
         
 

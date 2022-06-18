@@ -62,7 +62,7 @@ public final class Form_005fagregarMaterial1_jsp extends org.apache.jasper.runti
       out.write("    </div></div>\r\n");
       out.write("    <div class=\"container\">\r\n");
       out.write("        <div class=\"col-md-6\">\r\n");
-      out.write("        <form class=\"row g-3\" method=\"post\" action=\"Controlador\">\r\n");
+      out.write("        <form class=\"row g-3\" method=\"post\" action=\"Prueba\">\r\n");
       out.write("            <div><select class=\"form-select\" aria-label=\"Tipo de Material\" name=\"tipo\" required>\r\n");
       out.write("            <option selected disabled value=\"\">Escoger Tipo de Material</option>\r\n");
       out.write("            <option value=\"Libro\">Libro</option>\r\n");

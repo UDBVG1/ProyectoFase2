@@ -60,6 +60,9 @@ public final class Form_005fIngresoMaterial_jsp extends org.apache.jasper.runtim
       out.write("        \r\n");
       out.write("        \r\n");
       out.write("        <h1>Ingreso Realizado</h1>\r\n");
+      out.write("        <p>\r\n");
+      out.write("            \r\n");
+      out.write("        </p>\r\n");
       out.write("        ");
   
             MaterialCRUDD nuevo=new MaterialCRUDD();

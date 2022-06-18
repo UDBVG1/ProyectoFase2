@@ -18,6 +18,9 @@
         <%@page import="Modelos.*"%>
         <%@page import="java.util.*"%>
         <h1>Ingreso Realizado</h1>
+        <p>
+            <a href="Form_BuscarMaterial.jsp">Regresar</a>
+        </p>
         <%  
             MaterialCRUDD nuevo=new MaterialCRUDD();
             List<List<String>> lista=nuevo.listarMateriales();
