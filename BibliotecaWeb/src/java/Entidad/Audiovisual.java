@@ -12,7 +12,17 @@ package Entidad;
 public class Audiovisual extends Material{
     public String genero,duracion;
     public int numCanciones;
-
+    
+    public Audiovisual(){
+        super();
+    }
+    
+    public Audiovisual(String genero, String duracion, int numCanciones){
+        this.genero=genero;
+        this.duracion=duracion;
+        this.numCanciones=numCanciones;
+    }
+    
     public String getGenero() {
         return genero;
     }

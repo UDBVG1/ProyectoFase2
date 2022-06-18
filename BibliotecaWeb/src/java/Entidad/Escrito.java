@@ -12,7 +12,19 @@ package Entidad;
 public class Escrito extends Material{
     public int numPaginas,ISBN,fechaPubli;
     public String editorial,periodicidad;
-
+    
+    public Escrito(){
+        super();
+    }
+    
+    public Escrito(int numPaginas, int ISBN,int fechaPubli, String editorial, String periodicidad){
+        this.numPaginas=numPaginas;
+        this.ISBN=ISBN;
+        this.fechaPubli=fechaPubli;
+        this.editorial=editorial;
+        this.periodicidad=periodicidad;
+    }
+    
     public int getNumPaginas() {
         return numPaginas;
     }
