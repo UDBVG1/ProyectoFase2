@@ -36,8 +36,7 @@ public class JControl extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -120,13 +119,6 @@ public class JControl extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
         //response.sendRedirect("principal.jsp");
-    }
-
-    private Usuario obtenerDatos(HttpServletRequest request) {
-        Usuario u = new Usuario();
-        u.setUsuario(request.getParameter("username"));
-        u.setClave(request.getParameter("password"));
-        return u;
     }
 
     private void crear(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
