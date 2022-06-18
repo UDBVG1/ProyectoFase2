@@ -8,6 +8,7 @@ package servlets;
 import Entidad.Usuario;
 import Modelos.UsuariosCRUD;
 import Utilidades.Conexion;
+import Utilidades.ParametrosGlobales;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,12 +20,10 @@ import java.util.ArrayList;
 //import javabeans.MensajeBean;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 //import modelo.*;
 
-/**
- *
- * @author Rafael
- */
+
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
 public class Controlador extends HttpServlet {
     
@@ -38,17 +37,11 @@ public class Controlador extends HttpServlet {
             if(op.equals("principal")){
                 verificar(request,response);
             }else if(op.equals("grabar")){
-//                MensajeBean men=(MensajeBean) request.getAttribute("mensaje");
                 Conexion oper= new Conexion();
-
-//                if (oper.grabaMensaje(men)){
-//                    request.setAttribute("result","ok");
-//                }
-
                 RequestDispatcher rd=request.getRequestDispatcher("/inicio.jsp");
                 rd.forward(request, response);
-            }else if(op.equals("muestra")){
-                response.sendRedirect("mostrar.jsp");
+            }else if(op.equals("crear")){
+                crear(request,response);
             }else if(op.equals("ver")){
                 Conexion oper= new Conexion();
                 /*ArrayList mensajes=oper.obtenerMensajes(request.getParameter("nombre"));
@@ -101,14 +94,16 @@ public class Controlador extends HttpServlet {
     private void verificar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session;
         UsuariosCRUD crud;
-        Usuario usuario;
-        usuario=this.obtenerDatos(request);
         crud = new UsuariosCRUD();
-        usuario = crud.usuarioAcceso(usuario.Usuario,usuario.Clave);
-        System.out.println(usuario.toString());
-        if (usuario !=null && usuario.Nivel==3){
+        Usuario datos = crud.usuarioAcceso(request.getParameter("username"),request.getParameter("password"));
+        System.out.println(datos.getIdUs());
+        ParametrosGlobales.setGlobalAccesId(datos.getIdUs());
+        ParametrosGlobales.setGlobalUser(datos.getNombre());
+        ParametrosGlobales.setGlobalAccesNivel(datos.getNivel());
+        System.out.println(ParametrosGlobales.getGlobalAccesNivel());
+        if (datos !=null && datos.getNivel()==1){
             session=request.getSession();
-            session.setAttribute("usuario", usuario);
+            session.setAttribute("usuario", datos.getUsuario());
             request.setAttribute("msje", "Ingreso Aceptado");
             this.getServletConfig().getServletContext().getRequestDispatcher("/principal.jsp").forward(request, response);
         }else{
@@ -123,6 +118,23 @@ public class Controlador extends HttpServlet {
         u.setUsuario(request.getParameter("username"));
         u.setClave(request.getParameter("password"));
         return u;
+    }
+
+    private void crear(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UsuariosCRUD crud = new UsuariosCRUD();
+        Usuario usuario = new Usuario();
+        usuario.setNombre(request.getParameter("nombre")+" "+request.getParameter("apellido"));
+        usuario.setUsuario(request.getParameter("username"));
+        usuario.setNivel(Integer.parseInt(request.getParameter("nivel")));
+        usuario.setIdentificador(request.getParameter("identifcacion"));
+        if(request.getParameter("password").equals(request.getParameter("passwordC"))){
+            usuario.setClave(request.getParameter("password"));
+            int rows = crud.insertarUsuario(usuario);
+            this.getServletConfig().getServletContext().getRequestDispatcher("/principal.jsp").forward(request, response);
+            JOptionPane.showMessageDialog(null, rows+" Usuario Ingresado", "Completado", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, "Contraseña no coinciden", "Incompletado", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
 }
