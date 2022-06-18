@@ -24,21 +24,25 @@ import javax.swing.table.DefaultTableModel;
  * @author Eveling Santos
  */
 public class CRUDD {
-    
-    
+    private String SQL_MATERIAL="INSERT INTO `material` (`codigo`, `catalogacion`, `cantidad_total`, `cantidad_disponible`, `tiempo`, `idescrito`)\n" +
+                                       "VALUES (?, ?,?,?,?,?);";
+    private String INSERT_LIBRO="INSERT INTO `escrito` (`titulo`, `tipo`, `autor`, `num_pag`, `editorial`,`isbn`,`publicacion`) values(?,?,?,?,?,?,?);";
 //Función que ejecuta sentencia para listar miembros de una base de datos.
     
-    public DefaultTableModel material_lista(String SQL, int tipo,ArrayList datos) {
+    public List<List<String>> material_lista(String SQL, int tipo,ArrayList datos) {
         
         int index;
 
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        DefaultTableModel dtm=new DefaultTableModel();
+        List<List<String>> ListaMaterial= new ArrayList();
+        List<String> MiMaterial = new ArrayList();
+        
         try {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(SQL); 
+            if (tipo!=0){
             switch(tipo){
                 case 1:
                     index=1;
@@ -50,29 +54,26 @@ public class CRUDD {
                     for (int i=0;i<datos.size();i++){
                     
                     stmt.setString(index++,String.valueOf(datos.get(i)));
-                    System.out.println("valor datos : "+i+ " index: "+index+ " " +String.valueOf(datos.get(i)));
+                    
                     }
                     
                     break;
                 default:
                                       
-            }
+            }}
             rs = stmt.executeQuery();
             
-            ResultSetMetaData meta = rs.getMetaData();
-            int numberOfColumns = meta.getColumnCount();
-            for (int i = 1; i<= numberOfColumns; i++) {
-            dtm.addColumn(meta.getColumnLabel(i));
-            }
+            
             while (rs.next()) {
-                    
-                    Object[] fila = new Object[numberOfColumns];
-                    for (int i = 0; i<numberOfColumns; i++) {
-                    fila[i]=rs.getObject(i+1);
-                    }
-                    dtm.addRow(fila);
+                    MiMaterial= new ArrayList();
+                    MiMaterial.add(rs.getString("codigo"));
+                    MiMaterial.add(rs.getString("titulo"));
+                    MiMaterial.add(rs.getString("catalogacion"));
+                    MiMaterial.add(rs.getString("cantidad_disponible"));
+                    MiMaterial.add(rs.getString("cantidad_total"));
+                    ListaMaterial.add(MiMaterial);
             }
-            System.out.println("valor: "+String.valueOf(dtm.getValueAt(0,1)));
+            
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -80,9 +81,9 @@ public class CRUDD {
             Conexion.closeConnection(conn);
             Conexion.closeResulset(rs);
         }
-        return dtm;
+        return ListaMaterial;
     }    
-    
+    /*
     public List<List<String>> Listar(String SQL, int Tipo){
         
 
@@ -125,6 +126,56 @@ public class CRUDD {
         }
         return ListaMaterial;
     }    
+    */
+    
+    public void insertarEscritoLibro(Escrito Datos){
+        int rows = 0;
+        int id=0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        PreparedStatement stmt2= null;
+        try {
+            conn = Conexion.getConexion();
+            //Ingresando en escrito
+            stmt = conn.prepareStatement(INSERT_LIBRO,Statement.RETURN_GENERATED_KEYS);
+            int index = 1;
+                stmt.setString(index++,Datos.getTitulo());
+                stmt.setString(index++,Datos.getTipo());
+                stmt.setString(index++,Datos.getAutor());
+                stmt.setInt(index++,Datos.getNumPaginas());
+                stmt.setString(index++, Datos.getcatalogacion());
+                stmt.setString(index++,Datos.getEditorial());
+                stmt.setInt(index++, Datos.getISBN());
+                stmt.setInt(index++,Datos.getFechaPubli());
+            rows = stmt.executeUpdate();
+                   
+            if (rows > 0) {
+               System.out.println("Registro Exitoso"); 
+            }
+            ResultSet getidescrito = stmt.getGeneratedKeys();
+            if(getidescrito.next()){ 
+                    id = getidescrito.getInt(1);
+                }
+            index=1;
+                stmt2.setString(index, "LIB64654");
+                stmt2.setString(index++,Datos.getcatalogacion());
+                stmt2.setInt(index++, Datos.getCantTotal());
+                stmt2.setInt(index++,Datos.getCantDisp());
+                stmt2.setInt(index++,Datos.getTiempo());
+                stmt2.setInt(index++, id);
+            rows = stmt.executeUpdate();
+            if (rows > 0) {
+               System.out.println("Registro Exitoso"); 
+            }
+         } catch (SQLException e) {
+            System.out.println("Error al guardar datos");
+        } finally {
+            Conexion.closeStatement(stmt);
+            Conexion.closeConnection(conn);
+        }
+        
+    }
+    
     
     public void insertarDatos(String SQL,String SQL2,ArrayList<String> Informacion,ArrayList<String> Informacion2,String codigo, int i, int j,int a, int b, int c) {
         int rows = 0;
@@ -152,7 +203,7 @@ public class CRUDD {
             rows = stmt.executeUpdate();
             System.out.println(SQL);        
             if (rows > 0) {
-                JOptionPane.showMessageDialog(null, "Registro exitoso" + "/n" + "Registros afectados" + rows, "Ingresado", JOptionPane.INFORMATION_MESSAGE);
+               System.out.println("Registro Exitoso"); 
             }
             if(ParametrosGlobales.mat_table=true){
             ResultSet getidescrito = stmt.getGeneratedKeys();            
@@ -189,7 +240,7 @@ public class CRUDD {
             }
             
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al guardar datos", "Alta", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Error al guardar datos");
         } finally {
             Conexion.closeStatement(stmt);
             Conexion.closeConnection(conn);
@@ -270,7 +321,7 @@ public class CRUDD {
             
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al buscar el id", "extraer", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Error al buscar el id");
         } finally {
             Conexion.closeStatement(stmt);
             Conexion.closeConnection(conn);

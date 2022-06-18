@@ -6,6 +6,9 @@
 package Utilidades;
 
 import java.util.logging.Logger;
+import java.util.*;
+import Entidad.*;
+
 
 /**
  *
@@ -14,6 +17,8 @@ import java.util.logging.Logger;
 public class ParametrosGlobales {
     //Aqui se pondran todos los parametros globales necesarios
     //para usar en la aplicaion en general
+    
+    
     public static boolean UsuariosPanelAgregar;
     public static boolean UsuariosPanelModificar;
   
@@ -27,6 +32,7 @@ public class ParametrosGlobales {
 
     //Materiales
       public static String tipo;
+      public static int tipoA;
       public static boolean mat_table;
 
     public static boolean isUsuariosPanelAgregar() {
@@ -96,4 +102,5 @@ public class ParametrosGlobales {
     public ParametrosGlobales() {
     }
        
+      
 }
