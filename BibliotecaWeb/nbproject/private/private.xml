@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/web/Form_IngresoEscrito.jsp</file>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/src/java/Servlets/Controlador.java</file>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/web/Form_IngresoMaterial.jsp</file>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/src/java/Modelos/MaterialBD.java</file>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/web/Form_agregarMaterial2.jsp</file>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/src/java/Utilidades/Conexion.java</file>
-            <file>file:/C:/Users/Eveling%20Santos/Pictures/UDB/GitHub/Desafio2/ProyectoFase2/BibliotecaWeb/web/Form_agregarMaterial1.jsp</file>
+            <file>file:/E:/Documentos/Student/POO/ProyectoFase2/ProyectoFase2/BibliotecaWeb/web/principal.jsp</file>
+            <file>file:/E:/Documentos/Student/POO/ProyectoFase2/ProyectoFase2/BibliotecaWeb/src/java/Entidad/Usuario.java</file>
+            <file>file:/E:/Documentos/Student/POO/ProyectoFase2/ProyectoFase2/BibliotecaWeb/src/java/Modelos/UsuariosCRUD.java</file>
+            <file>file:/E:/Documentos/Student/POO/ProyectoFase2/ProyectoFase2/BibliotecaWeb/src/java/Utilidades/Conexion.java</file>
+            <file>file:/E:/Documentos/Student/POO/ProyectoFase2/ProyectoFase2/BibliotecaWeb/src/java/servlets/Controlador.java</file>
+            <file>file:/E:/Documentos/Student/POO/ProyectoFase2/ProyectoFase2/BibliotecaWeb/web/login.jsp</file>
         </group>
     </open-files>
 </project-private>
