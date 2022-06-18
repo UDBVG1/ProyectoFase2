@@ -12,16 +12,17 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author amgoo
  */
-public class UsuariosCRUD {
+public class UsuariosCRUD extends Conexion{
     //SELECTS
     private final String sqlUsuarioAcceso = "SELECT idusuario,nombre,usuario,password,nivel FROM usuario where usuario=? and password=?;";
-    private final String sqlUsuarios = "SELECT idusuario as ID,nombre as NOMBRE,usuario as USUARIO, nivel AS NIVEL, (select descripcion from config where estado='nivel usuario' and valor=nivel) as NIVEL_USUARIO, identificacion as IDENTIFICACION FROM usuario where nivel>=?;";
+    private final String sqlUsuarios = "SELECT idusuario as ID,nombre as NOMBRE,usuario as USUARIO, nivel AS NIVEL, identificacion as IDENTIFICACION FROM usuario where nivel>=?;";
     private final String sqlComboNivel="SELECT descripcion from config where estado='nivel usuario';";
     private final String sqlUsuario="SELECT idusuario,nombre,usuario,password,nivel FROM usuario where idusuario=?;";
     private final String sqlUsuarioGenerate="select coalesce(concat(upper(?),substr(year(curdate()),3,4),(lpad(substr(max(usuario),3,6)+1,4,'0'))),concat(upper(?),substr(year(curdate()),3,4),'0001')) AS U_generado from usuario where usuario like upper(?);";
@@ -63,8 +64,9 @@ public class UsuariosCRUD {
         }
         return obUsuario;
     }
-    public DefaultTableModel usuariosLista(int nivel){
-        DefaultTableModel dtm = new DefaultTableModel();
+    public List<Usuario> usuariosLista(int nivel){
+        List<Usuario> dtm= null;
+        Usuario us;
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -73,18 +75,10 @@ public class UsuariosCRUD {
             stmt = conn.prepareStatement(sqlUsuarios);
             stmt.setInt(1, nivel);
             rs = stmt.executeQuery();
-            ResultSetMetaData meta = rs.getMetaData();
-            int numberOfColumns = meta.getColumnCount();
-            for (int i = 1; i<= numberOfColumns; i++) {
-                dtm.addColumn(meta.getColumnLabel(i));
-            }
+            dtm=new ArrayList<>();                
             while (rs.next()) {
-                    
-                    Object[] fila = new Object[numberOfColumns];
-                    for (int i = 0; i<numberOfColumns; i++) {
-                    fila[i]=rs.getObject(i+1);
-                    }
-                    dtm.addRow(fila);
+                us = new Usuario(rs.getInt("ID"), rs.getInt("NIVEL"), rs.getString("NOMBRE"), rs.getString("USUARIO"), rs.getString("IDENTIFICACION"), null); 
+                dtm.add(us);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,29 +173,29 @@ public class UsuariosCRUD {
         String setCambios=null;
         System.out.println(usuario.toString());
         try{
-            if(usuario.Nombre!=null){
-                setCambios="nombre = '"+usuario.Nombre+"'";
+            if(usuario.getNombre()!=null){
+                setCambios="nombre = '"+usuario.getNombre()+"'";
             }
-            if(usuario.Identificador!=null && usuario.Nombre!=null){
-                setCambios=setCambios+", identificacion = '"+usuario.Identificador+"'";
-            }else if(usuario.Identificador!=null){
-                setCambios="identificacion = '"+usuario.Identificador+"'";
+            if(usuario.getIdentificador()!=null && usuario.getNombre()!=null){
+                setCambios=setCambios+", identificacion = '"+usuario.getIdentificador()+"'";
+            }else if(usuario.getIdentificador()!=null){
+                setCambios="identificacion = '"+usuario.getIdentificador()+"'";
             }
-            if(usuario.Clave!=null && (usuario.Identificador!=null || usuario.Nombre!=null)){
-                setCambios=setCambios+", password = '"+usuario.Clave+"'";
-            }else if(usuario.Clave!=null){
-                setCambios="password = '"+usuario.Clave+"'";
+            if(usuario.getClave()!=null && (usuario.getIdentificador()!=null || usuario.getNombre()!=null)){
+                setCambios=setCambios+", password = '"+usuario.getClave()+"'";
+            }else if(usuario.getClave()!=null){
+                setCambios="password = '"+usuario.getClave()+"'";
             }
-            if(usuario.Nivel!=0 && (usuario.Identificador!=null || usuario.Nombre!=null|| usuario.Clave!=null)){
-                setCambios=setCambios+", nivel = '"+usuario.Nivel+"'";
-            }else if(usuario.Nivel!=0){
-                setCambios="nivel = '"+usuario.Nivel+"'";
+            if(usuario.getNivel()!=0 && (usuario.getIdentificador()!=null || usuario.getNombre()!=null|| usuario.getClave()!=null)){
+                setCambios=setCambios+", nivel = '"+usuario.getNivel()+"'";
+            }else if(usuario.getNivel()!=0){
+                setCambios="nivel = '"+usuario.getNivel()+"'";
             }
             conn = Conexion.getConexion();
             System.out.println(sqlUsuarioUpdate+setCambios+sqlUsuarioParam);
             stmt = conn.prepareStatement(sqlUsuarioUpdate+setCambios+sqlUsuarioParam);
             int index=1;
-            stmt.setInt(index, usuario.IdUs);
+            stmt.setInt(index, usuario.getIdUs());
             System.out.print(stmt);
             rows = stmt.executeUpdate();
         }catch(SQLException e){
@@ -223,11 +217,11 @@ public class UsuariosCRUD {
             conn = Conexion.getConexion();
             stmt = conn.prepareStatement(sqlUsuarioInsert);
             int index=1;
-            stmt.setString(index++, usuario.Nombre);
-            stmt.setString(index++, usuario.Identificador);
-            stmt.setString(index++, usuario.Usuario);
-            stmt.setString(index++, usuario.Clave);
-            stmt.setInt(index, usuario.Nivel);
+            stmt.setString(index++, usuario.getNombre());
+            stmt.setString(index++, usuario.getIdentificador());
+            stmt.setString(index++, usuario.getUsuario());
+            stmt.setString(index++, usuario.getClave());
+            stmt.setInt(index, usuario.getNivel());
             System.out.print(stmt);
             rows = stmt.executeUpdate();
         }catch(SQLException e){

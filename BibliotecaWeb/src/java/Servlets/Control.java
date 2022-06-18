@@ -3,27 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package Servlets;
 
-import Utilidades.Conexion;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-//import javabeans.MensajeBean;
-import javax.servlet.RequestDispatcher;
-//import modelo.*;
 
 /**
  *
- * @author Rafael
+ * @author Eveling Santos
  */
-@WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
-public class Controlador extends HttpServlet {
+@WebServlet(name = "Control", urlPatterns = {"/Control"})
+public class Control extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,29 +35,15 @@ public class Controlador extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-        	String op=request.getParameter("operacion");
-                int result=0;
-            if(op.equals("principal")){
-                response.sendRedirect("principal.jsp");
-            }else if(op.equals("grabar")){
-//                MensajeBean men=(MensajeBean) request.getAttribute("mensaje");
-                Conexion oper= new Conexion();
-
-//                if (oper.grabaMensaje(men)){
-//                    request.setAttribute("result","ok");
-//                }
-
-                RequestDispatcher rd=request.getRequestDispatcher("/inicio.jsp");
-                rd.forward(request, response);
-            }else if(op.equals("muestra")){
-                response.sendRedirect("mostrar.jsp");
-            }else if(op.equals("ver")){
-                Conexion oper= new Conexion();
-                /*ArrayList mensajes=oper.obtenerMensajes(request.getParameter("nombre"));
-                request.setAttribute("mensajes", mensajes);
-                RequestDispatcher rd=request.getRequestDispatcher("/ver.jsp");
-                rd.forward(request, response);*/
-           }
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Control</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Control at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -91,6 +73,10 @@ public class Controlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        String tipo=request.getParameter("tipo");
+        out.println("tipo");
+        
         processRequest(request, response);
     }
 

@@ -19,7 +19,6 @@ public class Audiovisual extends Material{
         this.duracion=duracion;
         this.numCanciones=numCanciones;
     }
-
     public String getGenero() {
         return genero;
     }
