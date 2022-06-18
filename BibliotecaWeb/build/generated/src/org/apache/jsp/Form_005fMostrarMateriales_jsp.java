@@ -3,8 +3,9 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.util.*;
 
-public final class Form_005fagregarMaterial1_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class Form_005fMostrarMateriales_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -53,8 +54,9 @@ public final class Form_005fagregarMaterial1_jsp extends org.apache.jasper.runti
       out.write("<title>Agregar Material</title>\r\n");
       out.write("    </head>\r\n");
       out.write("    <body>\r\n");
+      out.write("                \r\n");
       out.write("     <div class=\"container\">\r\n");
-      out.write("         <h1 align=\"center\"> Ingresar Nuevo Material </h1>\r\n");
+      out.write("         <h1 align=\"center\"> Material Encontrado </h1>\r\n");
       out.write("      \r\n");
       out.write("    </div>\r\n");
       out.write("    <div class=\"container\"><div class=\"col-12\"> \r\n");
@@ -62,24 +64,38 @@ public final class Form_005fagregarMaterial1_jsp extends org.apache.jasper.runti
       out.write("    </div></div>\r\n");
       out.write("    <div class=\"container\">\r\n");
       out.write("        <div class=\"col-md-6\">\r\n");
-      out.write("        <form class=\"row g-3\" method=\"post\" action=\"Controlador\">\r\n");
-      out.write("            <div><select class=\"form-select\" aria-label=\"Tipo de Material\" name=\"tipo\" required>\r\n");
-      out.write("            <option selected disabled value=\"\">Escoger Tipo de Material</option>\r\n");
-      out.write("            <option value=\"Libro\">Libro</option>\r\n");
-      out.write("            <option value=\"Revista\">Revista</option>\r\n");
-      out.write("            <option value=\"Obra\">Obra</option>\r\n");
-      out.write("            <option value=\"CD\">CD</option>\r\n");
-      out.write("            <option value=\"DVD\">DVD</option>\r\n");
-      out.write("                </select>\r\n");
-      out.write("            </div>\r\n");
-      out.write("        <div class=\"col-12\"><label for=\"titulo\" class=\"form-label\">Titulo</label>\r\n");
-      out.write("        <input type=\"text\" class=\"form-control\"  name=\"titulo\" placeholder=\"Titulo del material\" required></div>\r\n");
-      out.write("        <div class=\"col-md-6\"> <label for=\"ubicacion\" class=\"form-label\">Ubicación</label>\r\n");
-      out.write("        <input type=\"text\" class=\"form-control\" name=\"ubicacion\" placeholder=\"Ubicación dentro de la Biblioteca\" required></div> \r\n");
-      out.write("        <input type=\"hidden\" name=\"operacion\" value=\"1\">\r\n");
-      out.write("        <input type=\"hidden\" name=\"r1\" value=\"1\">\r\n");
-      out.write("        <div class=\"col-12\"><button type=\"submit\" class=\"btn btn-primary\" value=\"Siguiente\">Siguiente</button></div></form></div></div>\r\n");
-      out.write("        <div class=\"container\"><div class=\"col-12\"></div>\r\n");
+      out.write("            ");
+ List<List<String>> lista=(ArrayList)request.getAttribute("Material");           
+            
+      out.write("\r\n");
+      out.write("        <div class=\"container\">\r\n");
+      out.write("           <ul class=\"list-group\">\r\n");
+      out.write("            ");
+ for(int i=0;i<lista.size();i++){
+            
+      out.write("\r\n");
+      out.write("              <li class=\"list-group-item\">Codigo: ");
+      out.print(lista.get(i).get(0));
+      out.write("</li>\r\n");
+      out.write("                <li class=\"list-group-item\">Titulo: ");
+      out.print(lista.get(i).get(1));
+      out.write("</li>\r\n");
+      out.write("                <li class=\"list-group-item\">Catalogacion: ");
+      out.print(lista.get(i).get(2));
+      out.write("</li>\r\n");
+      out.write("                <li class=\"list-group-item\">Cantidad Total: ");
+      out.print(lista.get(i).get(3));
+      out.write("</li>\r\n");
+      out.write("                <li class=\"list-group-item\">Cantidad Disponible: ");
+      out.print(lista.get(i).get(4));
+      out.write("</li>\r\n");
+      out.write("            ");
+
+        }
+      out.write("</ul>\r\n");
+      out.write("</div>\r\n");
+      out.write("        \r\n");
+      out.write("\r\n");
       out.write("    </body>\r\n");
       out.write("</html>\r\n");
     } catch (Throwable t) {
