@@ -9,7 +9,6 @@ import Entidad.*;
 import Utilidades.ParametrosGlobales;
 import java.util.*;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -49,8 +48,11 @@ public class MaterialCRUDD extends CRUDD{
         i=j=0;
         a=b=c=100;
         /*Asignar a String*/
+        codigo="SS1";
+        
         matriz_entidad.clear();
         matriz_material.clear();
+        
         matriz_entidad.add(Entidad.getTitulo());
         matriz_entidad.add(Entidad.getTipo());
         matriz_entidad.add(Entidad.getAutor());
@@ -138,7 +140,8 @@ public class MaterialCRUDD extends CRUDD{
         return codigo;
     }
     
-    public DefaultTableModel listarMateriales(){
+    public List<List<String>> listarMateriales(){
+        
         switch (ParametrosGlobales.GlobalAccesNivel){
             case 1: SQLMaterial="select codigo, titulo, catalogacion, tiempo, cantidad_total, cantidad_disponible from materiales_vista;";
                     break;
@@ -146,47 +149,50 @@ public class MaterialCRUDD extends CRUDD{
                     break;
             case 3: SQLMaterial="select codigo, titulo, catalogacion,  cantidad_disponible from materiales_vista;";
                     break;
+            default:
+                SQLMaterial="select codigo, titulo, catalogacion, tiempo, cantidad_total, cantidad_disponible from materiales_vista;";
         }
         
-        DefaultTableModel dtm=super.material_lista(SQLMaterial,0,code);
+         List<List<String>> dtm=super.material_lista(SQLMaterial,0,code);
         return dtm;
     }
     
     public int EliminarMateriales(String codigo, String tipo){
         int id,i;
 
-        
+        i=0;
         code.clear();
         code.add(codigo);
-        JOptionPane.showMessageDialog(null, "tipo: " + tipo);
+        //mensaje
         if (tipo.equals(Lista[0]) || tipo.equals(Lista[1])  || tipo.equals(Lista[2] )){
             SQLMaterial="Select codigo,idescrito from materiales_vista where codigo=?;";            
-            DefaultTableModel dtm=super.material_lista(SQLMaterial,1,code);
-            id=Integer.parseInt(String.valueOf(dtm.getValueAt(0,1)));
+            List<List<String>> dtm=super.material_lista(SQLMaterial,1,code);
+            //Obtener ID
+            id=Integer.parseInt(String.valueOf(dtm.get(1)));
             super.EliminarMaterial(SQL_DELETE_ESCRITO,id); i=0;
             
         }
         else{
             if (tipo.equals(Lista[3]) || tipo.equals(Lista[4])){
             SQLMaterial="Select codigo,idaudiovisual from materiales_vista where codigo=?;";            
-            DefaultTableModel dtm=super.material_lista(SQLMaterial,1,code);
-            id=Integer.parseInt(String.valueOf(dtm.getValueAt(0,1)));
+            List<List<String>> dtm=super.material_lista(SQLMaterial,1,code);
+            id=Integer.parseInt(String.valueOf(dtm.get(1)));
             super.EliminarMaterial(SQL_DELETE_AUDIOVISUAL,id); i=0;
         }
             else{
-                JOptionPane.showMessageDialog(null, "¡Error!\n No se encuentra Material", "Alerta", JOptionPane.WARNING_MESSAGE); i=1;
+                //Mensaje
             }
             }
         return i;
     }
     
     
-    public DefaultTableModel Busqueda(ArrayList elementos){
-      DefaultTableModel dtm=super.material_lista(SQLbuscar,2,elementos);
+    public List<List<String>> Busqueda(ArrayList elementos){
+      List<List<String>> dtm=super.material_lista(SQLbuscar,2,elementos);
       return dtm;
     }
     
-    public DefaultTableModel BuscarMaterial(String codigo, String datos){
+    public List<List<String>>BuscarMaterial(String codigo, String datos){
         code.clear();
         code.add(codigo);
         SQLMaterial="select codigo,titulo,catalogacion,";
@@ -216,8 +222,9 @@ public class MaterialCRUDD extends CRUDD{
         case 3: SQLMaterial=SQLMaterial + ",cantidad_disponible from materiales_vista where codigo=?;";
                 break;
     } 
+        SQLMaterial=SQLMaterial + ",cantidad_total, cantidad_disponible, tiempo from materiales_vista where codigo=?;";
         //System.out.println(SQLMaterial);
-      DefaultTableModel dtm=super.material_lista(SQLMaterial,1,code);
+      List<List<String>> dtm=super.material_lista(SQLMaterial,1,code);
       return dtm;
     }
     
@@ -235,7 +242,7 @@ public class MaterialCRUDD extends CRUDD{
                         SQL_UPDATE="UPDATE Audiovisual SET titulo = ? WHERE idaudiovisual = ?;";                    
                         }
                         else{
-                          JOptionPane.showMessageDialog(null, "¡Error!\n No se encuentra Material", "Alerta", JOptionPane.WARNING_MESSAGE);  
+                        //Mensaje
                           dec=1;
                         }
                     }
@@ -256,7 +263,7 @@ public class MaterialCRUDD extends CRUDD{
                     }
                     else{
                       
-                      JOptionPane.showMessageDialog(null, "¡Error!\n No se encuentra Material", "Alerta", JOptionPane.WARNING_MESSAGE);
+                      //Mensaje
                       dec=1;
                     }
                  }
@@ -318,23 +325,46 @@ public class MaterialCRUDD extends CRUDD{
         String id=null;
             if (tipo.equals(Lista[0]) || tipo.equals(Lista[1])  || tipo.equals(Lista[2] )){
             SQLMaterial="Select codigo,idescrito from materiales_vista where codigo=?;";            
-            DefaultTableModel dtm=super.material_lista(SQLMaterial,1,code);
-            id=String.valueOf(dtm.getValueAt(0,1));
+            List<List<String>> dtm=super.material_lista(SQLMaterial,1,code);
+            id=String.valueOf(dtm.get(1));
             }
             else{
             if (tipo.equals(Lista[3]) || tipo.equals(Lista[4])){
             SQLMaterial="Select codigo,idaudiovisual from materiales_vista where codigo=?;";            
-            DefaultTableModel dtm=super.material_lista(SQLMaterial,1,code);
-            id=String.valueOf(dtm.getValueAt(0,1));
+            List<List<String>> dtm=super.material_lista(SQLMaterial,1,code);
+            id=String.valueOf(dtm.get(1));
              }
             else{
-                JOptionPane.showMessageDialog(null, "¡Error!\n No se encuentra Material", "Alerta", JOptionPane.WARNING_MESSAGE);
+               //Mensaje
             } 
            
           }
             return id;
     }
 
+        public String PreparacionTipo(String dato){
+        String tipoMaterial;
+        tipoMaterial="";
+            switch(dato){
+                case "Libro":
+                    tipoMaterial="LIB";
+                    break;
+                case "Revista":
+                    tipoMaterial="REV";
+                    break;
+                case "Obra":
+                    tipoMaterial="OBR";
+                    break;
+                case "CD":
+                    tipoMaterial="CDA";
+                    break;
+                case "DVD":
+                    tipoMaterial="DVD";
+                    break;
+            }
+        
+        return tipoMaterial;
+    }
 }
     
 
