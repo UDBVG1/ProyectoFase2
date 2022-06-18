@@ -5,10 +5,7 @@
  */
 package Servlets;
 
-import Entidad.Usuario;
-import Modelos.UsuariosCRUD;
-import Utilidades.Conexion;
-import Utilidades.ParametrosGlobales;
+
 import Entidad.Audiovisual;
 import Entidad.Escrito;
 import Entidad.Material;
@@ -16,7 +13,6 @@ import Utilidades.ParametrosGlobales;
 import Modelos.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +28,7 @@ import javax.swing.JOptionPane;
 
 
 @WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
-public class Controlador extends HttpServlet {
+public class ControladorEV extends HttpServlet {
     
 
 /**
@@ -53,38 +49,10 @@ public class Controlador extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-        	String op=request.getParameter("operacion");
-                int result=0;
-            if(op.equals("principal")){
-                verificar(request,response);
-            }else if(op.equals("grabar")){
-                Conexion oper= new Conexion();
-                RequestDispatcher rd=request.getRequestDispatcher("/inicio.jsp");
-                rd.forward(request, response);
-            }else if(op.equals("crear")){
-                crear(request,response);
-            }else if(op.equals("ver")){
-                Conexion oper= new Conexion();
-                /*ArrayList mensajes=oper.obtenerMensajes(request.getParameter("nombre"));
-                request.setAttribute("mensajes", mensajes);
-                RequestDispatcher rd=request.getRequestDispatcher("/ver.jsp");
-                rd.forward(request, response);*/
-           }
-           out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Controlador</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }   
+     }
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -315,50 +283,7 @@ public class Controlador extends HttpServlet {
      * @throws IOException
      */
 
-    private void verificar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session;
-        UsuariosCRUD crud;
-        crud = new UsuariosCRUD();
-        Usuario datos = crud.usuarioAcceso(request.getParameter("username"),request.getParameter("password"));
-        System.out.println(datos.getIdUs());
-        ParametrosGlobales.setGlobalAccesId(datos.getIdUs());
-        ParametrosGlobales.setGlobalUser(datos.getNombre());
-        ParametrosGlobales.setGlobalAccesNivel(datos.getNivel());
-        System.out.println(ParametrosGlobales.getGlobalAccesNivel());
-        if (datos !=null && datos.getNivel()==1){
-            session=request.getSession();
-            session.setAttribute("usuario", datos.getUsuario());
-            request.setAttribute("msje", "Ingreso Aceptado");
-            this.getServletConfig().getServletContext().getRequestDispatcher("/principal.jsp").forward(request, response);
-        }else{
-            request.setAttribute("msje", "Credenciales Incorrectas");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-        //response.sendRedirect("principal.jsp");
-    }
+    
 
-    private Usuario obtenerDatos(HttpServletRequest request) {
-        Usuario u = new Usuario();
-        u.setUsuario(request.getParameter("username"));
-        u.setClave(request.getParameter("password"));
-        return u;
-    }
-
-    private void crear(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UsuariosCRUD crud = new UsuariosCRUD();
-        Usuario usuario = new Usuario();
-        usuario.setNombre(request.getParameter("nombre")+" "+request.getParameter("apellido"));
-        usuario.setUsuario(request.getParameter("username"));
-        usuario.setNivel(Integer.parseInt(request.getParameter("nivel")));
-        usuario.setIdentificador(request.getParameter("identifcacion"));
-        if(request.getParameter("password").equals(request.getParameter("passwordC"))){
-            usuario.setClave(request.getParameter("password"));
-            int rows = crud.insertarUsuario(usuario);
-            this.getServletConfig().getServletContext().getRequestDispatcher("/principal.jsp").forward(request, response);
-            JOptionPane.showMessageDialog(null, rows+" Usuario Ingresado", "Completado", JOptionPane.INFORMATION_MESSAGE);
-        }else{
-            JOptionPane.showMessageDialog(null, "Contraseña no coinciden", "Incompletado", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
+}
 }
