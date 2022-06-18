@@ -10,9 +10,17 @@ package Entidad;
  * @author admin
  */
 public class Escrito extends Material{
-    public int numPaginas,ISBN,fechaPubli;
-    public String editorial,periodicidad;
+    public int numPaginas,fechaPubli;
+    public String editorial,periodicidad,ISBN;
 
+    public Escrito(String codigo, String titulo, String autor,int numPaginas, String ISBN,int fechaPubli,int cantDis) {
+        super(codigo, titulo, autor,cantDis);
+        this.numPaginas = numPaginas;
+        this.ISBN = ISBN;
+        this.fechaPubli = fechaPubli;
+    }
+
+    
     public int getNumPaginas() {
         return numPaginas;
     }
@@ -21,11 +29,11 @@ public class Escrito extends Material{
         this.numPaginas = numPaginas;
     }
 
-    public int getISBN() {
+    public String getISBN() {
         return ISBN;
     }
 
-    public void setISBN(int ISBN) {
+    public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
@@ -52,11 +60,5 @@ public class Escrito extends Material{
     public void setFechaPubli(int fechaPubli) {
         this.fechaPubli = fechaPubli;
     }
-
-    @Override
-    public String toString() {
-        return "Libro: "+super.titulo+" "+this.ISBN+" escrito por: "+super.autor;
-    }
-    
-    
+   
 }

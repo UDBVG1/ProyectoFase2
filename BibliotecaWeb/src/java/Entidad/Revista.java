@@ -10,16 +10,30 @@ package Entidad;
  * @author admin
  */
 public class Revista extends Material{
-    public String editorial, periodicidad, fechaPubli;
+    public String periodicidad;
+    int fechaPubli;
 
-    public String getEditorial() {
-        return editorial;
+    public Revista(String codigo, String titulo,String autor,String periodicidad, int fechaPubli, int CantDisp) {
+        super(codigo, titulo,autor, CantDisp);
+        this.periodicidad = periodicidad;
+        this.fechaPubli = fechaPubli;       
     }
 
-    public void setEditorial(String editorial) {
-        this.editorial = editorial;
+    public String getPeriodicidad() {
+        return periodicidad;
     }
 
+    public void setPeriodicidad(String periodicidad) {
+        this.periodicidad = periodicidad;
+    }
+
+    public int getFechaPubli() {
+        return fechaPubli;
+    }
+
+    public void setFechaPubli(int fechaPubli) {
+        this.fechaPubli = fechaPubli;
+    }
 
 
     @Override
