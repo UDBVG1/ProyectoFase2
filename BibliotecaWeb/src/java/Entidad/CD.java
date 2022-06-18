@@ -9,16 +9,14 @@ package Entidad;
  *
  * @author admin
  */
-public class Audiovisual extends Material{
-    public String genero,duracion;
-    public int numCanciones;
-
-    public Audiovisual(String codigo, String titulo, String genero,String duracion,int numCanciones,String autor, int CantDisp) {
+public class CD extends Material{
+    String genero, duracion;
+    public CD(String codigo, String titulo, String genero,String duracion,String autor, int CantDisp) {
         super(codigo, titulo, autor, CantDisp);
         this.genero=genero;
         this.duracion=duracion;
-        this.numCanciones=numCanciones;
     }
+
     public String getGenero() {
         return genero;
     }
@@ -34,19 +32,5 @@ public class Audiovisual extends Material{
     public void setDuracion(String duracion) {
         this.duracion = duracion;
     }
-
-    public int getNumCanciones() {
-        return numCanciones;
-    }
-
-    public void setNumCanciones(int numCanciones) {
-        this.numCanciones = numCanciones;
-    }
-
-    @Override
-    public String toString() {
-        return "CDs: " + super.titulo + " ("+genero + "), escrita por: " + super.autor;
-    }
-    
     
 }

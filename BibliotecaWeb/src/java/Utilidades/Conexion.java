@@ -26,21 +26,19 @@ public class Conexion {
      * @throws java.sql.SQLException
      */
    //*************************creamos la conexion************************
-    public static Connection getConexion(){//asi se crea las exepciones personalizadas
+    public static Connection getConexion(){
     conn = null;
     try{
     Class.forName(driver);//driver
      conn=DriverManager.getConnection(server, user, password);//conexion
-     //PS = conn.createStatement(); //cuando queramso invocar sentencias de tipo mysql 
-     //deberemos de usar stm. por que es el que invoca la opcion para nosotros usar las sentencias mysql desde la intefaz
-    }
+     System.out.println("conexion exitosa");
+        }
+
     catch(ClassNotFoundException | SQLException e){
         System.out.println("ERROR No encuentro el driver de la BD: "+ e);
-//    );//estas son las exepcione que se pueden unir ocn ese palito 
-//    System.out.println("ERROR:No encuentro el driver de la BD: " + e.getMessage());
     }
     return conn;
-    }//esta no se manda a llamar solo los close y la interaccion con la b
+    }
 
     //*********************cerrar la bd****************************
     
@@ -51,7 +49,6 @@ public class Conexion {
     }
     }catch (SQLException e) {
         System.out.println("ERROR No encuentro el driver de la BD: "+ e);
-    //logger.error("ERROR en la conexion bd"+ e);
         }
     }
             
@@ -62,8 +59,7 @@ public class Conexion {
     }
     } catch (SQLException e) {
         System.out.println("ERROR No encuentro el driver de la BD: "+ e);
-    //logger.error("ERROR:Fallo en SQL: " + e.getMessage());
-      }
+       }
     }
     public static void closeConnection(Connection conn){//cerrar la conexion
         try {
@@ -72,8 +68,6 @@ public class Conexion {
     }
         } catch (SQLException e) {
             System.out.println("ERROR No encuentro el driver de la BD: "+ e);
-    //logger.error("ERROR:Fallo en SQL: " + e.getMessage());
         }
     }
-    //cuando ya se quiera cerrar las conexiones solo se manda a llamar a las funciones de close
-}
+    }

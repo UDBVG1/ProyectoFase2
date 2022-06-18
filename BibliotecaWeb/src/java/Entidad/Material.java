@@ -24,6 +24,13 @@ public class Material {
     public String titulo,autor,codigo,catalogacion, tipo,dato;
     public int CantTotal,CantPrestada,CantDisp, tiempo;
     private final String SQL_SELECTID = "select COALESCE(concat(upper(?),(lpad(substr(max(codigo),4,7)+1,5,'0'))),concat(upper(?),'00001')) as idcodigo from material where codigo like upper(?);";
+
+    public Material(String codigo, String titulo, String autor, int CantDisp){
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.CantDisp = CantDisp;
+        this.autor = autor;
+    }
     
     public Material(){
         super();
