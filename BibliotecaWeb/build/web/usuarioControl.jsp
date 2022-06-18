@@ -58,7 +58,7 @@
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-auto">
                     <div id="login-box" class="col-md-auto">
-                        <form id="login-form" action="Controlador?operacion=crear" method="post">
+                        <form id="login-form" action="JControl?operacion=crear" method="post">
                             <!--<h3 class="text-center text-info">Usuarios</h3>-->
                             <div class="form-row">
                                 <div class="col">

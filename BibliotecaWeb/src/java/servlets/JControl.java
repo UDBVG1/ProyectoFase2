@@ -40,17 +40,17 @@ public class JControl extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-        	String op=request.getParameter("operacion");
+        	String op1=request.getParameter("operacion1");
                 int result=0;
-            if(op.equals("principal")){
+            if(op1.equals("principal")){
                 verificar(request,response);
-            }else if(op.equals("grabar")){
+            }else if(op1.equals("grabar")){
                 Conexion oper= new Conexion();
                 RequestDispatcher rd=request.getRequestDispatcher("/inicio.jsp");
                 rd.forward(request, response);
-            }else if(op.equals("crear")){
+            }else if(op1.equals("crear")){
                 crear(request,response);
-            }else if(op.equals("ver")){
+            }else if(op1.equals("ver")){
                 Conexion oper= new Conexion();
                 /*ArrayList mensajes=oper.obtenerMensajes(request.getParameter("nombre"));
                 request.setAttribute("mensajes", mensajes);
