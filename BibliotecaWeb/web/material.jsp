@@ -71,7 +71,8 @@
                 <%if(columna5!=""){%>
                 <p><%= columna5+ material.get(6)%></p>
                 <%}%>
-                <a class="btn btn-outline-success" id="reservar" href="ControladorP?operacion=reservaHecha&codigo1=<%= material.get(0)%>">Reservar</a>
+                <a class="btn btn-outline-success" id="reservar" href="ControladorP?operacion=reservaHecha&codigo1=<%= material.get(0)%>" method="post">Reservar</a>
+
                 <!--agrega boton para agregar reserva o prestamo 
                 tambien desplega los prestamos ya hecho para hacer la devolucion
                 agrega que cada que se haga un prestamo se descuente de disponible pero en mysql

@@ -5,11 +5,7 @@
  */
 package Modelos;
 
-import Entidad.Audiovisual;
-import Entidad.CD;
-import Entidad.Escrito;
-import Entidad.Material;
-import Entidad.Revista;
+import Entidad.*;
 import Utilidades.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +29,25 @@ public class PrestamosCRUD {
         public String SQL_cd = "select codigo,titulo,genero,duracion,canciones,director,cantidad_disponible from materiales_vista where codigo =?;";
         public String SQL_dvd = "select codigo,titulo,genero,duracion,director,cantidad_disponible from materiales_vista where codigo =?;";
         private final String SQL_INSERTREV = "INSERT INTO reserva(fechareserva,estado,codigo,idusuario) values (CURDATE(),'1',?,?);";
-     
+        public String SQL_prestar="call validarPrestamos(?,?,?);";
+        public String SQL_reservas = "SELECT r.idreserva as ID,	m.codigo as Codigo,case when m.idescrito is not null then l.titulo\n" +
+                                    "when m.idaudiovisual is not null then mc.titulo\n" +
+                                    "else null end AS titulo,autor,(SELECT c.descripcion FROM poo.config c where c.estado='estado reserva' and valor=r.estado) as estado,u.usuario\n" +
+                                    "FROM material m\n" +
+                                    "LEFT join escrito l on m.idescrito=l.idescrito\n" +
+                                    "LEFT join audiovisual mc on m.idaudiovisual=mc.idaudiovisual\n" +
+                                    "LEFT join reserva r on m.codigo = r.codigo\n" +
+                                    "LEFT join usuario u on u.idusuario = r.idusuario\n" +
+                                    "where r.estado not in (2);";
+        public String SQL_devolucion = "call devolucion(?,?);";
+         public String SQL_SELECTPRESX = "SELECT p.codigo,case when m.idescrito is not null then l.titulo\n" +
+                                        "when m.idaudiovisual is not null then mc.titulo\n" +
+                                        "else null end AS titulo,CONVERT(p.fechaprestamo, CHAR)as Fecha_Prestamo,CONVERT(p.fechaentrega, CHAR)as Fecha_Entrega,p.mora\n" +
+                                        "FROM material m\n" +
+                                        "LEFT join escrito l on m.idescrito=l.idescrito\n" +
+                                        "LEFT join audiovisual mc on m.idaudiovisual=mc.idaudiovisual\n" +
+                                        "LEFT join prestamos p on m.codigo = p.codigo\n";
+         
         public ArrayList<Material> materiales(){
         Connection cn=null;
         ArrayList<Material> material=null;
@@ -61,7 +75,7 @@ public class PrestamosCRUD {
         return(material);
     }
         
-        public ArrayList materialIndividual(String sql, String code){
+    public ArrayList materialIndividual(String sql, String code){
         Connection cn=null;
         ArrayList material=null;
         PreparedStatement st = null;
@@ -75,7 +89,7 @@ public class PrestamosCRUD {
             rs = st.executeQuery();
             ResultSetMetaData meta = rs.getMetaData();
             int numberOfColumns = meta.getColumnCount();
-              
+ 
             material=new ArrayList();
             while (rs.next()) {
               for (int i = 0; i<numberOfColumns; i++) {
@@ -91,6 +105,88 @@ public class PrestamosCRUD {
             Conexion.closeResulset(rs);
         }
         return(material);
+    }
+        
+       public ArrayList<Reserva> reservas(){
+        Connection cn=null;
+        ArrayList<Reserva> reservas=null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            cn=Conexion.getConexion();
+            st=cn.prepareStatement(SQL_reservas);
+            rs = st.executeQuery();
+            reservas=new ArrayList<Reserva>();
+            while (rs.next()) {
+                Reserva r2=new Reserva(rs.getString("Codigo"),rs.getString("Titulo"),
+                        rs.getString("Autor"),rs.getString("estado"),rs.getString("usuario"),rs.getInt("ID"));               
+                reservas.add(r2);
+            }
+           
+        } catch (Exception e ) {
+            System.out.println("Problemas de conexion "+e);
+        } finally {
+            Conexion.closeStatement(st);
+            Conexion.closeConnection(cn);
+            Conexion.closeResulset(rs);
+        }
+        return(reservas);
+    }  
+       
+    public ArrayList<Prestamo> prestamoU(int usuario){
+        Connection cn=null;
+        ArrayList<Prestamo> prestamo=null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            cn=Conexion.getConexion();
+            st=cn.prepareStatement(SQL_SELECTPRESX + "where p.idsocio = ?;");
+            st.setInt(1,usuario);
+            rs = st.executeQuery();          
+            prestamo=new ArrayList<Prestamo>();
+            while (rs.next()) {
+                Prestamo p=new Prestamo(rs.getString("codigo"),rs.getString("titulo"),
+                        rs.getString("Fecha_Prestamo"),rs.getString("Fecha_Entrega"),rs.getInt("mora"));
+                prestamo.add(p);
+            }
+            
+           
+        } catch (Exception e ) {
+            System.out.println("Problemas de conexion "+e);
+        } finally {
+            Conexion.closeStatement(st);
+            Conexion.closeConnection(cn);
+            Conexion.closeResulset(rs);
+        }
+        return(prestamo);
+    }
+    public ArrayList labels(String sql){
+        Connection cn=null;
+        ArrayList labels=null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            cn=Conexion.getConexion();
+            st=cn.prepareStatement(sql);
+            rs = st.executeQuery();
+            ResultSetMetaData meta = rs.getMetaData();
+            int numberOfColumns = meta.getColumnCount();
+ 
+            labels=new ArrayList();
+              for (int i = 1; i<=numberOfColumns; i++) {
+                  labels.add(meta.getColumnLabel(i));
+                }
+                                 
+          
+        } catch (Exception e ) {
+            System.out.println("Problemas de conexion "+e);
+        } finally {
+            Conexion.closeStatement(st);
+            Conexion.closeConnection(cn);
+            Conexion.closeResulset(rs);
+        }
+        return(labels);
     }
     
     public int insertarReserva(Object codigo,int idsocio){
@@ -119,5 +215,67 @@ public class PrestamosCRUD {
             Conexion.closeConnection(conn);
         }
         return resp;
-    }    
+    }  
+    
+        public int insertarPrestamo(int idsocio,Object codigo, Object idreserva){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String resultado = "";
+        int resp = JOptionPane.showConfirmDialog(null, "Desea continuar con el Prestamo?");
+        try {
+        if(resp==0){
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_prestar);
+            int index = 1;
+            stmt.setInt(index++,idsocio);
+            stmt.setObject(index++,codigo);            
+            stmt.setObject(index,idreserva);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                    resultado=(String) rs.getObject(1);
+            }
+            if(!resultado.equals("Prestamo realizado exitosamente")){
+            JOptionPane.showMessageDialog(null, "Prestamo Cancelado", "Contactanos en caso de ser necesario!", JOptionPane.INFORMATION_MESSAGE);         
+            }
+        }    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e2) {
+            System.out.println("error prestamos sistema: "+e2);
+        }finally {
+            Conexion.closeStatement(stmt);
+            Conexion.closeConnection(conn);
+            Conexion.closeResulset(rs);            
+        }
+            return resp;
+    }
+        
+        public int devolucion(int idsocio,Object codigo, Object idreserva){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String resultado = "";
+        int resp = JOptionPane.showConfirmDialog(null, "Desea continuar con la devolucion?");
+        try {
+        if(resp==0){
+            conn = Conexion.getConexion();
+            stmt = conn.prepareStatement(SQL_devolucion);
+            int index = 1;
+//no necesario el usuario ya que usamos directamente el id resserva jeje
+            stmt.setObject(index++,codigo);            
+            stmt.setObject(index,idreserva);
+            rs = stmt.executeQuery();
+        }    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e2) {
+            System.out.println("error prestamos sistema: "+e2);
+        }finally {
+            Conexion.closeStatement(stmt);
+            Conexion.closeConnection(conn);
+            Conexion.closeResulset(rs);            
+        }
+            return resp;
+    }
 }

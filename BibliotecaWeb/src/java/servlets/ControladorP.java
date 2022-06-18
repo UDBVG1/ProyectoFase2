@@ -49,12 +49,12 @@ public class ControladorP extends HttpServlet {
                 rd.forward(request, response);//con datos                
             }else if(op.equals("reservaHecha")){
                 // 3 alumno 1 admin 2 bibliotecario
-                int resp=prestamos.insertarReserva(request.getParameter("codigo1"), 3);
-                if(resp==0){
+                int resp1=prestamos.insertarReserva(request.getParameter("codigo1"), 3);
+                if(resp1==0){
                 JOptionPane.showMessageDialog(null, "Reserva Exitosa", "HECHO", JOptionPane.INFORMATION_MESSAGE);                    
                 response.sendRedirect("Materiales.jsp"); 
                 }
-                else if(resp==1){
+                else if(resp1==1){
                 JOptionPane.showMessageDialog(null, "Reserva Cancelada", "Cancelado", JOptionPane.INFORMATION_MESSAGE);      
                 response.sendRedirect("Materiales.jsp"); 
                 }
@@ -62,14 +62,32 @@ public class ControladorP extends HttpServlet {
                 response.sendRedirect("Materiales.jsp");   
                 }
                 //cambiar al nivel de usuario
-            }else if(op.equals("muestra")){
-                response.sendRedirect("mostrar.jsp");
-            }else if(op.equals("ver")){
-                Conexion oper= new Conexion();
-                /*ArrayList mensajes=oper.obtenerMensajes(request.getParameter("nombre"));
-                request.setAttribute("mensajes", mensajes);
-                RequestDispatcher rd=request.getRequestDispatcher("/ver.jsp");
-                rd.forward(request, response);*/
+            }else if(op.equals("prestamo")){
+                int resp2=prestamos.insertarPrestamo(1, request.getParameter("codigo2"), request.getParameter("id"));
+                if(resp2==0){
+                JOptionPane.showMessageDialog(null, "Prestamo Exitoso", "HECHO", JOptionPane.INFORMATION_MESSAGE);                    
+                response.sendRedirect("reservas.jsp"); 
+                }
+                else if(resp2==1){
+                JOptionPane.showMessageDialog(null, "Prestamo Cancelado", "Cancelado", JOptionPane.INFORMATION_MESSAGE);      
+                response.sendRedirect("reservas.jsp"); 
+                }
+                else{
+                response.sendRedirect("reservas.jsp");   
+                }
+            }else if(op.equals("devolucion")){
+                int resp3=prestamos.insertarPrestamo(1, request.getParameter("codigo2"), request.getParameter("id"));
+                if(resp3==0){
+                JOptionPane.showMessageDialog(null, "Devolucion Exitosa", "HECHO", JOptionPane.INFORMATION_MESSAGE);                    
+                response.sendRedirect("reservas.jsp"); 
+                }
+                else if(resp3==1){
+                JOptionPane.showMessageDialog(null, "Devolucion Cancelada", "Cancelado", JOptionPane.INFORMATION_MESSAGE);      
+                response.sendRedirect("reservas.jsp"); 
+                }
+                else{
+                response.sendRedirect("reservas.jsp");   
+                }
            }
         }
     }

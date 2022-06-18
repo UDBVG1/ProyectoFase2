@@ -13,31 +13,23 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css" integrity="sha384-zIaWifL2YFF1qaDiAo0JFgsmasocJ/rqu7LKYH8CoBEXqGbb9eO+Xi3s6fQhgFWM" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="prestamo.css">
+        <link rel="stylesheet" type="text/css" href="./searchbar.css">
         
         <title>JSP Page</title>
     </head>
     <body>        
     <form action="Materiales.jsp">
       <div class="form-row">
-        <div class="col-4">
-          <input type="text" class="form-control" placeholder="Titulo" name="searchTitulo" id="search">
+        <div>
+          <h3>Busqueda:</h3>
         </div>
-        <div class="col">
-              <select id="ListaTipo" class="form-control" name="tipo">
-                <option selected>Todo</option>
-                <option >Libro</option>
-                <option>Revista</option>
-                <option>CD</option>
-                <option>DVD</option>
-              </select>
-        </div>
-        <div class="col">
-          <button type="submit" class="btn btn-primary" href="Materiales.jsp" id="boton">Buscar</button>
-        </div>
+        <div class="col-7"> 
+          <input class="form-control" id="searchbar" onkeyup="search_titulo()" type="text"
+        name="search" placeholder="Search titulo..">
+        </div><br>
       </div>
     </form>    
-        <h1>PRESTAMOS</h1>
+
         <div id='list'>
         <%!    
         PrestamosCRUD mostrar = new PrestamosCRUD();
@@ -46,23 +38,13 @@
     <%
         for(Material m : materiales){
     %>  
-        <p>Codigo: <%=m.getCodigo()%></p>
-        <a href="ControladorP?operacion=material&codigo=<%=m.getCodigo()%>">
-            <p class="titulo">Titulo: <%=m.getTitulo()%></p></a>
-        <p>Autor: <%=m.getAutor()%></p>
-        <p>Cantidades disponibles: <%=m.getCantDisp()%></p><br><br>
+        <p class="titulo">Codigo: <%=m.getCodigo()%>
+        <a href="ControladorP?operacion=material&codigo=<%=m.getCodigo()%>" method="post">
+        <br>Titulo: <%=m.getTitulo()%></a>
+        <br>Autor: <%=m.getAutor()%>
+        <br>Cantidades disponibles: <%=m.getCantDisp()%><br></p>
         <%}%> 
         </div>
- <script>
-const input = document.querySelector('#search');    
-const boton = document.querySelector('#boton');  
-
-//funcion
-cons filtrar = () =>{
-    console.log(input.value);
-};
-
-boton.addEventListener('click',filtrar);
-</script>  
+<script src="./jsb.js"></script> 
     </body> 
 </html>
